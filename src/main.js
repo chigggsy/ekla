@@ -1,8 +1,20 @@
-import animateTitle from './features/animateTitle'
-import createBadge from './features/createBasge'
+import pageAbout from './pages/page_about'
+import pageContact from './pages/page_contact'
+import pageGlobal from './pages/page_global'
+import pageHome from './pages/page_home'
+import pageWork from './pages/page_work'
 import './styles/style.css'
 
-console.log('Welcome to Vite + JS + Webflow!')
+// Global Scripts
+pageGlobal()
 
-createBadge()
-animateTitle()
+// Local Scripts
+if (window.location.pathname === '/') {
+  pageHome()
+} else if (window.location.pathname === '/work') {
+  pageWork()
+} else if (window.location.pathname === '/about') {
+  pageAbout()
+} else if (window.location.pathname === '/contact') {
+  pageContact()
+}
