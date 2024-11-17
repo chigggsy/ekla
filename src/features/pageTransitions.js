@@ -1,11 +1,14 @@
 import barba from '@barba/core'
 import gsap from 'gsap'
+import { CustomEase } from 'gsap/CustomEase'
 import SplitType from 'split-type'
 
 import pageAbout from '../pages/page_about'
 import pageContact from '../pages/page_contact'
 import pageHome from '../pages/page_home'
 import pageWork from '../pages/page_work'
+
+gsap.registerPlugin(CustomEase)
 
 function pageTransitions() {
   console.log('Page Transitions - Loaded 14:52')
@@ -47,6 +50,88 @@ function pageTransitions() {
             },
             0.3
           )
+
+          if (data.next.namespace === 'home') {
+            gsap.set('.nav-description p', {
+              fontKerning: 'none',
+            })
+
+            const text = new SplitType('.nav-description p', {
+              types: ['lines', 'words'],
+            })
+
+            text.lines.forEach((line) => {
+              const wrapper = document.createElement('div')
+              wrapper.style.overflow = 'hidden'
+              line.parentNode.insertBefore(wrapper, line)
+              wrapper.appendChild(line)
+            })
+
+            const timeline = gsap.timeline()
+
+            timeline
+              .fromTo(
+                '.trailer-wrapper',
+                {
+                  opacity: 0,
+                  clipPath: 'inset(100% 0 0 0 round 0.25rem)',
+                },
+                {
+                  opacity: 1,
+                  clipPath: 'inset(0% 0 0 0 round 0.25rem)',
+                  duration: 1.5,
+                  ease: 'power3.inOut',
+                },
+                0.1
+              )
+              .fromTo(
+                '.trailer-wrapper',
+                { width: '60vw', height: '30vh' },
+                {
+                  width: '100vw',
+                  height: '100vh',
+                  duration: 2.5,
+                  ease: CustomEase.create(
+                    'custom',
+                    'M0,0 C0.396,0 0.489,0.055 0.6,0.162 0.934,0.486 0.639,1 1,1 '
+                  ),
+                },
+                0.3
+              )
+              .from(
+                '.nav-logo-image',
+                {
+                  y: 20,
+                  opacity: 0,
+                  duration: 1.5,
+                  ease: 'power3.inOut',
+                },
+                2
+              )
+              .from(
+                text.lines,
+                {
+                  y: '100%',
+                  duration: 1.5,
+                  ease: 'power3.inOut',
+                  stagger: 0.05,
+                  onComplete: () => {
+                    text.revert()
+                  },
+                },
+                2.05
+              )
+              .from(
+                '.nav-item-list',
+                {
+                  y: 20,
+                  opacity: 0,
+                  duration: 2,
+                  ease: 'power3.out',
+                },
+                2.5
+              )
+          }
 
           if (data.next.namespace === 'work') {
             gsap.set('.film-details p, .film-credits-header p', {
