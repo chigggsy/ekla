@@ -1,8 +1,6 @@
 import gsap from 'gsap'
 
 function imageFollowCursor() {
-  console.log('Image Follow Cursor - Loaded')
-
   function handleImageFollow(event) {
     const viewportWidth = window.innerWidth
     const viewportHeight = window.innerHeight

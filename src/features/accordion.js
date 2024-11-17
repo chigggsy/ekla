@@ -1,6 +1,4 @@
 function accordion() {
-  console.log('Accordion - Loaded')
-
   const accordionList = document.querySelectorAll('.film-credits-header')
   const creditList = document.querySelectorAll('.film-credits-item')
 

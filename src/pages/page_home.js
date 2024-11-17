@@ -1,5 +1,3 @@
-function pageHome() {
-  console.log('Home - Loaded')
-}
+function pageHome() {}
 
 export default pageHome

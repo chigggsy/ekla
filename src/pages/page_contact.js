@@ -1,5 +1,3 @@
-function pageContact() {
-  console.log('Contact - Loaded')
-}
+function pageContact() {}
 
 export default pageContact
