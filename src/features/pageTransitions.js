@@ -1,5 +1,6 @@
 import barba from '@barba/core'
 import gsap from 'gsap'
+import SplitType from 'split-type'
 
 import pageAbout from '../pages/page_about'
 import pageContact from '../pages/page_contact'
@@ -47,21 +48,103 @@ function pageTransitions() {
             0.3
           )
 
-          if (data.next.namespace === 'about') {
-            timeline.fromTo(
-              '.about-image',
+          if (data.next.namespace === 'work') {
+            gsap.set('.film-details p, .film-credits-header p', {
+              fontKerning: 'none',
+            })
+
+            const text = new SplitType(
+              '.film-details p, .film-credits-header p',
               {
-                opacity: 0,
-                clipPath: 'inset(100% 0 0 0 round 0.25rem)',
-              },
-              {
-                opacity: 1,
-                clipPath: 'inset(0% 0 0 0 round 0.25rem)',
-                duration: 1.5,
-                ease: 'power3.inOut',
-              },
-              0.5
+                types: ['lines', 'words'],
+              }
             )
+
+            text.lines.forEach((line) => {
+              const wrapper = document.createElement('div')
+              wrapper.style.overflow = 'hidden'
+              line.parentNode.insertBefore(wrapper, line)
+              wrapper.appendChild(line)
+            })
+
+            timeline
+              .from(
+                '.film-thumbnail img',
+                {
+                  opacity: 0,
+                  stagger: 0.2,
+                  duration: 1,
+                  ease: 'none',
+                },
+                0.5
+              )
+              .from(
+                text.lines,
+                {
+                  y: '100%',
+                  duration: 1.5,
+                  ease: 'power3.inOut',
+                  stagger: 0.05,
+                  onComplete: () => {
+                    text.revert()
+                  },
+                },
+                0.5
+              )
+              .from(
+                '.icon-accordion',
+                {
+                  opacity: 0,
+                  duration: 1.5,
+                  ease: 'power3.inOut',
+                  stagger: 0.1,
+                },
+                0.75
+              )
+          }
+
+          if (data.next.namespace === 'about') {
+            gsap.set('.about-description p', { fontKerning: 'none' })
+
+            const text = new SplitType('.about-description p', {
+              types: ['lines', 'words'],
+            })
+
+            text.lines.forEach((line) => {
+              const wrapper = document.createElement('div')
+              wrapper.style.overflow = 'hidden'
+              line.parentNode.insertBefore(wrapper, line)
+              wrapper.appendChild(line)
+            })
+
+            timeline
+              .fromTo(
+                '.about-image',
+                {
+                  opacity: 0,
+                  clipPath: 'inset(100% 0 0 0 round 0.25rem)',
+                },
+                {
+                  opacity: 1,
+                  clipPath: 'inset(0% 0 0 0 round 0.25rem)',
+                  duration: 1.5,
+                  ease: 'power3.inOut',
+                },
+                0.5
+              )
+              .from(
+                text.lines,
+                {
+                  y: '100%',
+                  duration: 1.5,
+                  ease: 'power3.inOut',
+                  stagger: 0.1,
+                  onComplete: () => {
+                    text.revert()
+                  },
+                },
+                0.6
+              )
           }
 
           return timeline
